@@ -6,9 +6,44 @@ from .chunking import Chunk
 
 TOKEN_RE = re.compile(r"[a-zA-Z0-9]+")
 
+# Common function words do not provide useful evidence for lexical retrieval.
+# Filtering them prevents unrelated questions from matching a long book only
+# because words such as "the", "is", or "in" appear very frequently.
+STOPWORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "be",
+    "by",
+    "can",
+    "do",
+    "for",
+    "from",
+    "how",
+    "in",
+    "is",
+    "it",
+    "of",
+    "on",
+    "or",
+    "the",
+    "there",
+    "to",
+    "was",
+    "what",
+    "who",
+    "why",
+    "with",
+}
+
 
 def tokenize(text: str) -> list[str]:
-    return [token.lower() for token in TOKEN_RE.findall(text)]
+    return [
+        token.lower()
+        for token in TOKEN_RE.findall(text)
+        if token.lower() not in STOPWORDS
+    ]
 
 
 @dataclass(frozen=True)

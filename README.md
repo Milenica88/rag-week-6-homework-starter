@@ -28,8 +28,11 @@ rag-week-6-homework-starter/
     retrieval.py
     rag.py
     cli.py
+  data/
+    the_prince.txt
   tests/
     test_chunking.py
+    test_corpus.py
     test_retrieval.py
     test_rag.py
   docs/
@@ -65,6 +68,13 @@ python -m src.cli --corpus-profile training-rag --question "Why are citations im
 
 - `default`: compact baseline corpus for Week 6 fundamentals.
 - `training-rag`: profile mirroring examples with focus on citations, references, and LLM-as-a-judge framing.
+- `the-prince`: Project Gutenberg eBook 1232, *The Prince* by Niccolò Machiavelli, loaded from `data/the_prince.txt`.
+
+Example for the extended book corpus:
+
+```bash
+python -m src.cli --corpus-profile the-prince --chunk-size 500 --overlap 100 --question "What kinds of principalities are there?"
+```
 
 ## Homework tasks for students
 

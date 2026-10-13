@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pathlib import Path
 
 
 @dataclass(frozen=True)
@@ -6,6 +7,22 @@ class Document:
     doc_id: str
     title: str
     text: str
+
+
+def load_the_prince_corpus() -> list[Document]:
+    """Load Project Gutenberg eBook 1232 as a single document."""
+    book_path = Path(__file__).resolve().parents[1] / "data" / "the_prince.txt"
+    if not book_path.exists():
+        raise FileNotFoundError(f"Book corpus not found: {book_path}")
+
+    text = book_path.read_text(encoding="utf-8").strip()
+    return [
+        Document(
+            doc_id="book-1232",
+            title="The Prince by Niccolo Machiavelli",
+            text=text,
+        )
+    ]
 
 
 def load_default_corpus() -> list[Document]:
@@ -83,7 +100,7 @@ def load_training_rag_corpus() -> list[Document]:
 
 
 def list_corpus_profiles() -> list[str]:
-    return ["default", "training-rag"]
+    return ["default", "training-rag", "the-prince"]
 
 
 def load_corpus(profile: str = "default") -> list[Document]:
@@ -91,4 +108,6 @@ def load_corpus(profile: str = "default") -> list[Document]:
         return load_default_corpus()
     if profile == "training-rag":
         return load_training_rag_corpus()
+    if profile == "the-prince":
+        return load_the_prince_corpus()
     raise ValueError(f"Unknown corpus profile: {profile}")
